@@ -16,3 +16,4 @@ game_Data/*
 game.exe
 UnityPlayer.dll
 UserSettings/
+*.meta

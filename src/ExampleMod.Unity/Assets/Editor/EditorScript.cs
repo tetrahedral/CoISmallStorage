@@ -1,8 +1,62 @@
+using UnityEditor;
+using System.IO;
+using System.Collections.Generic;
 using UnityEngine;
 
-// Script that can be only used in the Unity editor.
-public class EditorScript : MonoBehaviour {
+public class EditorScript : MonoBehaviour
+{
+    [MenuItem("Assets/Build AssetBundles")]
+    static void BuildAllAssetBundles()
+    {
+        string assetBundleDirectory = "Assets/AssetBundles";
+        if(!Directory.Exists(assetBundleDirectory))
+        {
+            Directory.CreateDirectory(assetBundleDirectory);
+        }
+        BuildPipeline.BuildAssetBundles(assetBundleDirectory, 
+                                        BuildAssetBundleOptions.None, 
+                                        BuildTarget.StandaloneWindows);
+    }
 
-	// TODO: Show some custom script.
+    [MenuItem("Assets/Unpack CoI Assets")]
+    static void UnpackAssets()
+    {
+        var files = Directory.EnumerateFiles("F:\\SteamLibrary\\steamapps\\common\\Captain of Industry\\AssetBundles\\");
 
+        foreach (var file in files)
+        {
+            var myLoadedAssetBundle = AssetBundle.LoadFromFile(file);
+            if (myLoadedAssetBundle == null)
+            {
+                Debug.Log("Failed to load: " + file);
+                continue;
+            }
+
+            var assetNames = myLoadedAssetBundle.GetAllAssetNames();
+            myLoadedAssetBundle.LoadAllAssets();
+            foreach (var name in assetNames) {
+                if (name.StartsWith("assets/base/buildings/storages/"))
+                {
+                    Debug.Log("Loading asset: " + name);
+                    var asset = myLoadedAssetBundle.LoadAssetWithSubAssets<GameObject>(name);
+                    if (asset == null)
+                    {
+                        Debug.Log("Asset was null");
+                        continue;
+                    }
+                    var baseName = name.Split('/')[4];
+                    // PrefabUtility.UnpackPrefabInstance(asset[0], PrefabUnpackMode.Completely, InteractionMode.UserAction);
+                    var SceneObject = Instantiate(asset[0]);
+                    // PrefabUtility.SaveAsPrefabAsset(SceneObject, "Assets/ExampleMod/" + baseName);
+                    // DestroyImmediate(SceneObject);
+                }
+            }
+        }
+    }
+
+    [MenuItem("Assets/Unload All AssetBundles")]
+    static void UnloadAssetBundles()
+    {
+        AssetBundle.UnloadAllAssetBundles(false);
+    }
 }
