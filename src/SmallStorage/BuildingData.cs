@@ -1,12 +1,10 @@
 ﻿using Mafi;
 using Mafi.Base;
-using Mafi.Core.Buildings.Storages;
-using Mafi.Core.Entities.Animations;
 using Mafi.Core.Entities.Static.Layout;
 using Mafi.Core.Mods;
 using Mafi.Core.Products;
 using System;
-using static Mafi.Base.Assets.Core;
+using System.Linq;
 using Mafi.Collections.ImmutableCollections;
 using Mafi.Core.Ports.Io;
 using Mafi.Core.Prototypes;
@@ -15,85 +13,56 @@ namespace SmallStorage;
 
 internal class BuildingData : IModData
 {
-    private EntityLayout buildElevatorLayout(ProtosDb db, char port, char height)
+    public void RegisterData(ProtoRegistrator registrator)
     {
-        IoPortShapeProto portShape = null;
-
-        foreach (IoPortShapeProto item in db.All<IoPortShapeProto>())
-        {
-            if (item.LayoutChar == port)
-            {
-                portShape = item;
-                break;
-            }
-        }
-
-        if (portShape == null)
-        {
-            throw new InvalidOperationException("Invalid Port Shape char");
-        }
-
-        var layoutParams = new EntityLayoutParams(useNewLayoutSyntax: true);
-        var initLayout = new EntityLayoutParser(db).ParseLayoutOrThrow(layoutParams, "[" + height + "]");
-        var ports = new IoPortTemplate[]
-        {
-            new IoPortTemplate(new PortSpec('A', IoPortType.Any, portShape, false), RelTile3i.Zero, Direction90.PlusX),
-            new IoPortTemplate(new PortSpec('Z', IoPortType.Any, portShape, false), new RelTile3i(RelTile2i.Zero, height - 49), Direction90.MinusX)
-        };
+        var unitProductType = new ProductType(typeof(CountableProductProto));
+        var looseProductType = new ProductType(typeof(LooseProductProto));
+        var fluidProductType = new ProductType(typeof(FluidProductProto));
         
-        return new EntityLayout("", initLayout.LayoutTiles, initLayout.TerrainVertices, ports.ToImmutableArray(), layoutParams, initLayout.CollapseVerticesThreshold);
-    }
-
-	public void RegisterData(ProtoRegistrator registrator) {
         var zipperProtoBuilder = new ZipperProtoBuilder(registrator);
 
         zipperProtoBuilder.Start("Unit Elevator 1", ModIds.Storages.UnitElevator1)
-			.Description("")
-			.SetCost(Costs.Build.CP(1).Workers(0))
-            .SetLayout(buildElevatorLayout(registrator.PrototypesDb, '#', '2'))
-            .SetProductsFilter((proto) => proto is CountableProductProto)
-			.SetCategories(Ids.ToolbarCategories.Transports)
-			.SetPrefabPath("Assets/SmallStorage/unitele1.prefab")
-			.BuildAndAdd();
+            .Description("")
+            .SetCost(Costs.Build.CP(1).Workers(0))
+            .SetLayout(BuildElevatorLayout(registrator.PrototypesDb, '#', '2'))
+            .SetCategories(Ids.ToolbarCategories.Transports)
+            .SetPrefabPath("Assets/SmallStorage/unitele1.prefab")
+            .BuildAndAdd();
 
         zipperProtoBuilder.Start("Unit Elevator 2", ModIds.Storages.UnitElevator2)
-			.Description("")
-			.SetCost(Costs.Build.CP(2).Workers(0))
-            .SetLayout(buildElevatorLayout(registrator.PrototypesDb, '#', '3'))
-            .SetProductsFilter((proto) => proto is CountableProductProto)
+            .Description("")
+            .SetCost(Costs.Build.CP(2).Workers(0))
+            .SetLayout(BuildElevatorLayout(registrator.PrototypesDb, '#', '3'))
             .SetCategories(Ids.ToolbarCategories.Transports)
-			.SetPrefabPath("Assets/SmallStorage/unitele2.prefab")
-			.BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/unitele2.prefab")
+            .BuildAndAdd();
 
         zipperProtoBuilder.Start("Loose Elevator 1", ModIds.Storages.LooseElevator1)
-			.Description("")
-			.SetCost(Costs.Build.CP(1).Workers(0))
-            .SetLayout(buildElevatorLayout(registrator.PrototypesDb, '~', '2'))
-            .SetProductsFilter((proto) => proto is LooseProductProto)
+            .Description("")
+            .SetCost(Costs.Build.CP(1).Workers(0))
+            .SetLayout(BuildElevatorLayout(registrator.PrototypesDb, '~', '2'))
             .SetCategories(Ids.ToolbarCategories.Transports)
-			.SetPrefabPath("Assets/SmallStorage/looseele1.prefab")
-			.BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/looseele1.prefab")
+            .BuildAndAdd();
 
         zipperProtoBuilder.Start("Loose Elevator 2", ModIds.Storages.LooseElevator2)
-			.Description("")
-			.SetCost(Costs.Build.CP(2).Workers(0))
-            .SetLayout(buildElevatorLayout(registrator.PrototypesDb, '~', '3'))
-            .SetProductsFilter((proto) => proto is LooseProductProto)
+            .Description("")
+            .SetCost(Costs.Build.CP(2).Workers(0))
+            .SetLayout(BuildElevatorLayout(registrator.PrototypesDb, '~', '3'))
             .SetCategories(Ids.ToolbarCategories.Transports)
-			.SetPrefabPath("Assets/SmallStorage/looseele2.prefab")
-			.BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/looseele2.prefab")
+            .BuildAndAdd();
 
-		registrator.StorageProtoBuilder.Start("Micro Unit Storage", ModIds.Storages.UnitMicro)
-			.Description("")
+        registrator.StorageProtoBuilder.Start("Micro Unit Storage", ModIds.Storages.UnitMicro)
+            .Description("")
             .SetCapacity(30)
             .SetNoTransferLimit()
-			.SetCost(Costs.Build.CP(5).Workers(0))
-			.SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
-				"A#>[3]>#V")
-            .SetProductsFilter((proto) => proto is CountableProductProto)
+            .SetCost(Costs.Build.CP(5).Workers(0))
+            .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
+                "A#>[3]>#V")
             .SetCategories(Ids.ToolbarCategories.Storages)
-			.SetPrefabPath("Assets/SmallStorage/unitmicro.prefab")
-			.BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/unitmicro.prefab")
+            .BuildAndAdd(unitProductType);
 
         registrator.StorageProtoBuilder.Start("Mini Unit Storage", ModIds.Storages.UnitMini)
             .Description("")
@@ -103,10 +72,9 @@ internal class BuildingData : IModData
             .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
                 "A#>[3][3]>#V",
                 "B#>[3][3]>#W")
-            .SetProductsFilter((proto) => proto is CountableProductProto)
             .SetCategories(Ids.ToolbarCategories.Storages)
-			.SetPrefabPath("Assets/SmallStorage/unitmini.prefab")
-            .BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/unitmini.prefab")
+            .BuildAndAdd(unitProductType);
 
         registrator.StorageProtoBuilder.Start("Small Unit Storage", ModIds.Storages.UnitSmall)
             .Description("")
@@ -117,10 +85,9 @@ internal class BuildingData : IModData
                 "A#>[4][4][4]>#V",
                 "   [4][4][4]   ",
                 "B#>[4][4][4]>#W")
-            .SetProductsFilter((proto) => proto is CountableProductProto)
             .SetCategories(Ids.ToolbarCategories.Storages)
-			.SetPrefabPath("Assets/SmallStorage/unitsmall.prefab")
-            .BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/unitsmall.prefab")
+            .BuildAndAdd(unitProductType);
 
         registrator.StorageProtoBuilder.Start("Micro Loose Storage", ModIds.Storages.LooseMicro)
             .Description("")
@@ -129,10 +96,9 @@ internal class BuildingData : IModData
             .SetCost(Costs.Build.CP(5).Workers(0))
             .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
                 "A~>[3][3]>~V")
-            .SetProductsFilter((proto) => proto is LooseProductProto)
             .SetCategories(Ids.ToolbarCategories.Storages)
-			.SetPrefabPath("Assets/SmallStorage/loosemicro.prefab")
-            .BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/loosemicro.prefab")
+            .BuildAndAdd(looseProductType);
 
         registrator.StorageProtoBuilder.Start("Mini Loose Storage", ModIds.Storages.LooseMini)
             .Description("")
@@ -142,10 +108,9 @@ internal class BuildingData : IModData
             .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
                 "A~>[3][3]>~V",
                 "B~>[3][3]>~W")
-            .SetProductsFilter((proto) => proto is LooseProductProto)
             .SetCategories(Ids.ToolbarCategories.Storages)
-			.SetPrefabPath("Assets/SmallStorage/loosemini.prefab")
-            .BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/loosemini.prefab")
+            .BuildAndAdd(looseProductType);
 
         registrator.StorageProtoBuilder.Start("Small Loose Storage", ModIds.Storages.LooseSmall)
             .Description("")
@@ -156,10 +121,9 @@ internal class BuildingData : IModData
                 "A~>[4][4][4]>~V",
                 "   [4][4][4]   ",
                 "B~>[4][4][4]>~W")
-            .SetProductsFilter((proto) => proto is LooseProductProto)
             .SetCategories(Ids.ToolbarCategories.Storages)
-			.SetPrefabPath("Assets/SmallStorage/loosesmall.prefab")
-            .BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/loosesmall.prefab")
+            .BuildAndAdd(looseProductType);
 
         registrator.StorageProtoBuilder.Start("Micro Fluid Storage", ModIds.Storages.FluidMicro)
             .Description("")
@@ -168,10 +132,9 @@ internal class BuildingData : IModData
             .SetCost(Costs.Build.CP(5).Workers(0))
             .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
                 "A@>[3][3]>@V")
-            .SetProductsFilter((proto) => proto is FluidProductProto)
             .SetCategories(Ids.ToolbarCategories.Storages)
-			.SetPrefabPath("Assets/SmallStorage/fluidmicro.prefab")
-            .BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/fluidmicro.prefab")
+            .BuildAndAdd(fluidProductType);
 
         registrator.StorageProtoBuilder.Start("Mini Fluid Storage", ModIds.Storages.FluidMini)
             .Description("")
@@ -181,10 +144,9 @@ internal class BuildingData : IModData
             .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
                 "A@>[3][3]>@V",
                 "B@>[3][3]>@W")
-            .SetProductsFilter((proto) => proto is FluidProductProto)
             .SetCategories(Ids.ToolbarCategories.Storages)
-			.SetPrefabPath("Assets/SmallStorage/fluidmini.prefab")
-            .BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/fluidmini.prefab")
+            .BuildAndAdd(fluidProductType);
 
         registrator.StorageProtoBuilder.Start("Small Fluid Storage", ModIds.Storages.FluidSmall)
             .Description("")
@@ -195,42 +157,28 @@ internal class BuildingData : IModData
                 "A@>[4][4][4]>@V",
                 "   [4][4][4]   ",
                 "B@>[4][4][4]>@W")
-            .SetProductsFilter((proto) => proto is FluidProductProto)
             .SetCategories(Ids.ToolbarCategories.Storages)
-			.SetPrefabPath("Assets/SmallStorage/fluidsmall.prefab")
-            .BuildAndAdd();
+            .SetPrefabPath("Assets/SmallStorage/fluidsmall.prefab")
+            .BuildAndAdd(fluidProductType);
+    }
 
-        //registrator.MachineProtoBuilder
-        //    .Start("Example furnace", ExampleModIds.Machines.ExampleFurnace)
-        //    .Description("Testing furnace")
-        //    .SetCost(Costs.Build.CP(80).Workers(10))
-        //    // For examples of layouts see `Mafi.Base.BaseMod` and `EntityLayoutParser`.
-        //    .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
-        //        "   [2][2][2][3][3][3][3][3][2]>~Y",
-        //        "   [2][2][3][5][5][7][7][4][3]   ",
-        //        "A~>[2][2][3][5][5][7][7][4][3]>'V",
-        //        "B~>[2][2][3][5][5][7][7][4][3]>'W",
-        //        "   [2][2][2][3][3][7][7][4][3]   ",
-        //        "   [2][2][2][2][2][2][2][2][3]>@E")
-        //    .SetCategories(Ids.ToolbarCategories.MachinesMetallurgy)
-        //    .SetPrefabPath("Assets/ExampleMod/BlastFurnace.prefab")
-        //    .SetAnimationParams(
-        //        animParams: AnimationParams.RepeatTimes(Duration.FromKeyframes(360),
-        //        times: 2,
-        //        changeSpeedToFit: true))
-        //    .BuildAndAdd();
+    private static EntityLayout BuildElevatorLayout(ProtosDb db, char port, char height)
+    {
+        var portShape = db.All<IoPortShapeProto>().FirstOrDefault(p => p.LayoutChar == port);
 
-        // Example of a new furnace recipe.
-        //registrator.RecipeProtoBuilder
-        //    .Start(name: "Example smelting",
-        //        recipeId: ExampleModIds.Recipes.ExampleSmelting,
-        //        machineId: ExampleModIds.Machines.ExampleFurnace)
-        //    .AddInput(8, ExampleModIds.Products.ExampleLooseProduct)
-        //    .AddInput(2, Ids.Products.Coal)
-        //    .SetDuration(20.Seconds())
-        //    .AddOutput(8, ExampleModIds.Products.ExampleMoltenProduct)
-        //    .AddOutput(24, Ids.Products.Exhaust, outputAtStart: true)
-        //    .BuildAndAdd();
+        if (portShape == null)
+        {
+            throw new InvalidOperationException("Invalid Port Shape char");
+        }
 
+        var layoutParams = new EntityLayoutParams(useNewLayoutSyntax: true);
+        var initLayout = new EntityLayoutParser(db).ParseLayoutOrThrow(layoutParams, "[" + height + "]");
+        var ports = new IoPortTemplate[]
+        {
+            new (new PortSpec('A', IoPortType.Any, portShape, false), RelTile3i.Zero, Direction90.PlusX),
+            new (new PortSpec('Z', IoPortType.Any, portShape, false), new RelTile3i(RelTile2i.Zero, height - 49), Direction90.MinusX)
+        };
+        
+        return new EntityLayout("", initLayout.LayoutTiles, initLayout.TerrainVertices, ports.ToImmutableArray(), layoutParams, initLayout.CollapseVerticesThreshold);
     }
 }

@@ -26,21 +26,23 @@ public sealed class ZipperProtoBuilder : IProtoBuilder
             m_protoId = protoId;
         }
 
+        [MustUseReturnValue]
         public State SetLayout(EntityLayout layout)
         {
             m_entityLayout = layout;
             return this;
         }
 
+        [MustUseReturnValue]
         public State SetRequiredPower(Electricity electricity)
         {
             m_requiredPower = electricity;
             return this;
         }
 
-        public ZipperProto BuildAndAdd(ProductType? productType = null)
+        public ZipperProto BuildAndAdd()
         {
-            return AddToDb(new ZipperProto(m_protoId, base.Strings, m_entityLayout == null ? base.LayoutOrThrow : m_entityLayout, base.Costs, m_requiredPower, base.Graphics));
+            return AddToDb(new ZipperProto(m_protoId, base.Strings, m_entityLayout ?? base.LayoutOrThrow, base.Costs, m_requiredPower, base.Graphics));
         }
     }
 

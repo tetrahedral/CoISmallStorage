@@ -38,19 +38,16 @@
     <Reference Include="Mafi.Unity">
       <HintPath>$(COI_ROOT)\Captain of Industry_Data\Managed\Mafi.Unity.dll</HintPath>
     </Reference>
-    <!-- <Reference Include="Mafi.ModsAuthoringSupport">
-      <HintPath>$(COI_ROOT)\Captain of Industry_Data\Managed\Mafi.ModsAuthoringSupport.dll</HintPath>
-    </Reference> -->
-    <Reference Include="UnityEditor">
-      <HintPath>F:\Unity 2021.3.6f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>F:\Unity 2021.3.6f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <!-- <Reference Include="UnityEngine.AssetBundleModule">
+<!--    <Reference Include="UnityEditor">-->
+<!--      <HintPath>F:\Unity 2021.3.6f1\Editor\Data\Managed\UnityEditor.dll</HintPath>-->
+<!--    </Reference>-->
+<!--    <Reference Include="UnityEngine">-->
+<!--      <HintPath>F:\Unity 2021.3.6f1\Editor\Data\Managed\UnityEngine.dll</HintPath>-->
+<!--    </Reference>-->
+    <Reference Include="UnityEngine.AssetBundleModule">
       <HintPath>$(COI_ROOT)\Captain of Industry_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-    </Reference> -->
-    <!-- <Reference Include="UnityEngine.CoreModule">
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(COI_ROOT)\Captain of Industry_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
@@ -97,6 +94,6 @@
     </Reference>
     <Reference Include="Unity.VectorGraphics">
       <HintPath>$(COI_ROOT)\Captain of Industry_Data\Managed\Unity.VectorGraphics.dll</HintPath>
-    </Reference> -->
+    </Reference>
   </ItemGroup>
 </Project>
