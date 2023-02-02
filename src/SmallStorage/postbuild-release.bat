@@ -1,7 +1,7 @@
 @echo off
 
 for /f "tokens=* USEBACKQ" %%f in (`powershell "(new-object -COM Wscript.Shell).SpecialFolders('MyDocuments')"`) do (
-    set DocumentsFolder=%%p
+    set DocumentsFolder=%%f
 )
 
 set MODS_FOLDER=%DocumentsFolder%\Captain of Industry\Mods
