@@ -1,3 +1,8 @@
+smallstorage_d73c
+    Assets/SmallStorage/Concrete.mat
+    Assets/SmallStorage/Concrete-1024-albedo.png
+    Assets/SmallStorage/Concrete-1024-normals.png
+
 fluidmicro_4c54
     Assets/SmallStorage/fluidmicro.prefab
 
@@ -21,6 +26,15 @@ loosemini_4a27
 
 loosesmall_fd30
     Assets/SmallStorage/loosesmall.prefab
+
+microstoragebox_2706
+    Assets/SmallStorage/microstoragebox.prefab
+
+ministoragebox_34f8
+    Assets/SmallStorage/ministoragebox.prefab
+
+smallstoragebox_c83f
+    Assets/SmallStorage/smallstoragebox.prefab
 
 unitele1_fb60
     Assets/SmallStorage/unitele1.prefab

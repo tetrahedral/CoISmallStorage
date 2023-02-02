@@ -42,7 +42,7 @@ internal class BuildingData : IModData
             .SetCost(Costs.Build.CP(1).Workers(0))
             .SetLayout(BuildElevatorLayout(registrator.PrototypesDb, '~', '2'))
             .SetCategories(Ids.ToolbarCategories.Transports)
-            .SetPrefabPath("Assets/SmallStorage/looseele1.prefab")
+            .SetPrefabPath("Assets/SmallStorage/unitele1.prefab")
             .BuildAndAdd();
 
         zipperProtoBuilder.Start("Loose Elevator 2", ModIds.Storages.LooseElevator2)
@@ -50,7 +50,7 @@ internal class BuildingData : IModData
             .SetCost(Costs.Build.CP(2).Workers(0))
             .SetLayout(BuildElevatorLayout(registrator.PrototypesDb, '~', '3'))
             .SetCategories(Ids.ToolbarCategories.Transports)
-            .SetPrefabPath("Assets/SmallStorage/looseele2.prefab")
+            .SetPrefabPath("Assets/SmallStorage/unitele2.prefab")
             .BuildAndAdd();
 
         registrator.StorageProtoBuilder.Start("Micro Unit Storage", ModIds.Storages.UnitMicro)
@@ -59,9 +59,9 @@ internal class BuildingData : IModData
             .SetNoTransferLimit()
             .SetCost(Costs.Build.CP(5).Workers(0))
             .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
-                "A#>[3]>#V")
+                "A#>[3][3]>#V")
             .SetCategories(Ids.ToolbarCategories.Storages)
-            .SetPrefabPath("Assets/SmallStorage/unitmicro.prefab")
+            .SetPrefabPath("Assets/SmallStorage/microstoragebox.prefab")
             .BuildAndAdd(unitProductType);
 
         registrator.StorageProtoBuilder.Start("Mini Unit Storage", ModIds.Storages.UnitMini)
@@ -73,7 +73,7 @@ internal class BuildingData : IModData
                 "A#>[3][3]>#V",
                 "B#>[3][3]>#W")
             .SetCategories(Ids.ToolbarCategories.Storages)
-            .SetPrefabPath("Assets/SmallStorage/unitmini.prefab")
+            .SetPrefabPath("Assets/SmallStorage/ministoragebox.prefab")
             .BuildAndAdd(unitProductType);
 
         registrator.StorageProtoBuilder.Start("Small Unit Storage", ModIds.Storages.UnitSmall)
@@ -86,7 +86,7 @@ internal class BuildingData : IModData
                 "   [4][4][4]   ",
                 "B#>[4][4][4]>#W")
             .SetCategories(Ids.ToolbarCategories.Storages)
-            .SetPrefabPath("Assets/SmallStorage/unitsmall.prefab")
+            .SetPrefabPath("Assets/SmallStorage/smallstoragebox.prefab")
             .BuildAndAdd(unitProductType);
 
         registrator.StorageProtoBuilder.Start("Micro Loose Storage", ModIds.Storages.LooseMicro)
@@ -97,7 +97,7 @@ internal class BuildingData : IModData
             .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
                 "A~>[3][3]>~V")
             .SetCategories(Ids.ToolbarCategories.Storages)
-            .SetPrefabPath("Assets/SmallStorage/loosemicro.prefab")
+            .SetPrefabPath("Assets/SmallStorage/microstoragebox.prefab")
             .BuildAndAdd(looseProductType);
 
         registrator.StorageProtoBuilder.Start("Mini Loose Storage", ModIds.Storages.LooseMini)
@@ -109,7 +109,7 @@ internal class BuildingData : IModData
                 "A~>[3][3]>~V",
                 "B~>[3][3]>~W")
             .SetCategories(Ids.ToolbarCategories.Storages)
-            .SetPrefabPath("Assets/SmallStorage/loosemini.prefab")
+            .SetPrefabPath("Assets/SmallStorage/ministoragebox.prefab")
             .BuildAndAdd(looseProductType);
 
         registrator.StorageProtoBuilder.Start("Small Loose Storage", ModIds.Storages.LooseSmall)
@@ -122,7 +122,7 @@ internal class BuildingData : IModData
                 "   [4][4][4]   ",
                 "B~>[4][4][4]>~W")
             .SetCategories(Ids.ToolbarCategories.Storages)
-            .SetPrefabPath("Assets/SmallStorage/loosesmall.prefab")
+            .SetPrefabPath("Assets/SmallStorage/smallstoragebox.prefab")
             .BuildAndAdd(looseProductType);
 
         registrator.StorageProtoBuilder.Start("Micro Fluid Storage", ModIds.Storages.FluidMicro)
@@ -133,7 +133,7 @@ internal class BuildingData : IModData
             .SetLayout(new EntityLayoutParams(useNewLayoutSyntax: true),
                 "A@>[3][3]>@V")
             .SetCategories(Ids.ToolbarCategories.Storages)
-            .SetPrefabPath("Assets/SmallStorage/fluidmicro.prefab")
+            .SetPrefabPath("Assets/SmallStorage/microstoragebox.prefab")
             .BuildAndAdd(fluidProductType);
 
         registrator.StorageProtoBuilder.Start("Mini Fluid Storage", ModIds.Storages.FluidMini)
@@ -145,7 +145,7 @@ internal class BuildingData : IModData
                 "A@>[3][3]>@V",
                 "B@>[3][3]>@W")
             .SetCategories(Ids.ToolbarCategories.Storages)
-            .SetPrefabPath("Assets/SmallStorage/fluidmini.prefab")
+            .SetPrefabPath("Assets/SmallStorage/ministoragebox.prefab")
             .BuildAndAdd(fluidProductType);
 
         registrator.StorageProtoBuilder.Start("Small Fluid Storage", ModIds.Storages.FluidSmall)
@@ -158,7 +158,7 @@ internal class BuildingData : IModData
                 "   [4][4][4]   ",
                 "B@>[4][4][4]>@W")
             .SetCategories(Ids.ToolbarCategories.Storages)
-            .SetPrefabPath("Assets/SmallStorage/fluidsmall.prefab")
+            .SetPrefabPath("Assets/SmallStorage/smallstoragebox.prefab")
             .BuildAndAdd(fluidProductType);
     }
 
